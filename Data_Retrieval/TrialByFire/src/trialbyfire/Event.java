@@ -117,6 +117,7 @@ public class Event {
                 break;
             case "ITEM_PURCHASED":
                 participantId = (long) obj.get("participantId");
+                itemId = (long) obj.get("itemId");
                 break;
             case "WARD_PLACED":
                     participantId = (long) obj.get("creatorId");
