@@ -6,11 +6,15 @@
 package trialbyfire;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.net.ssl.HttpsURLConnection;
 
 /**
@@ -20,14 +24,65 @@ import javax.net.ssl.HttpsURLConnection;
 public class TrialByFire {
 
     public static boolean calling_API;
+    public static int totalMatches = 0;
+    public static int totalKrakensSpent = 0;
+    public static int totalKrakensSpentWinner = 0;
+    public static int totalKrakensSpentLoser = 0;
+    public static double averageKrakensSpent = 0;
+    public static double averageKrakensSpentWinner = 0;
+    public static double averageKrakensSpentLoser = 0;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        GetMatchInfo match = new GetMatchInfo("1907183118");
-        Thread th = new Thread(match);
-        th.start();
+        //GetMatchInfo match = new GetMatchInfo("1907183118");
+        
+        String fileName = "test.txt";
+        BufferedReader reader = null;
+        try {
+            reader = new BufferedReader(new FileReader(fileName));
+            String line;
+            while ((line = reader.readLine()) != null){
+                if(!line.equals("[") && !line.equals("]")){
+                    line = line.replaceAll(",", "");
+                    System.out.println(line);
+                }
+            }
+        } catch (FileNotFoundException ex) {
+            //Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
+        } catch (IOException ex) {
+            //Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
+            System.exit(0);
+        }
+        finally{
+            if(reader != null){
+                try {
+                    reader.close();
+                } catch (IOException ex) {
+                    Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        
+        
+        
+        /*
+        String[] matchIds = {"1907211476", "1907183118"};
+        for(String matchId : matchIds){
+            GetMatchInfo match = new GetMatchInfo(matchId);
+            Thread th = new Thread(match);
+            th.start();
+            while(th.isAlive()){}
+        }
+        
+        
+        averageKrakensSpent = ((double) totalKrakensSpent) / totalMatches;
+        averageKrakensSpentWinner = ((double) totalKrakensSpentWinner) / totalMatches;
+        averageKrakensSpentLoser = ((double) totalKrakensSpentLoser) / totalMatches;
+        System.out.printf("TOTAL_SPENT %d\nTOTAL_SPENT_WINNER %d\nTOTAL_SPENT_LOSER %d\n", totalKrakensSpent, totalKrakensSpentWinner, totalKrakensSpentLoser);
+        System.out.printf("AVERAGE_SPENT %f\n AVERAGE_SPENT_WINNER %f\nAVERAGE_SPENT_LOSER %f\n", averageKrakensSpent, averageKrakensSpentWinner, averageKrakensSpentLoser);
+        */
     }
     
    /**
@@ -37,6 +92,7 @@ public class TrialByFire {
     public static void HandleMatch(Match match){
         //Get mercanary buys for each team
         int[] mercanaryCount = new int[8];
+        int[] spentKrakens = new int[2];
         int winner = -1;
         winner = match.getTeams().get(0).isWinner() ? 1 : 2;
         ArrayList<Frame> frames = match.getTimeline().getFrames();
@@ -47,39 +103,73 @@ public class TrialByFire {
                     if(event.getItemId() == 3612){
                         if(event.getParticipantId() < 6){
                             mercanaryCount[0] ++;
+                            spentKrakens[0] += 5;
                         }
                         else{
                             mercanaryCount[4] ++;
+                            spentKrakens[1] += 5;
                         }
                     }
                     else if(event.getItemId() == 3611){
                         if(event.getParticipantId() < 6){
                             mercanaryCount[1] ++;
+                            spentKrakens[0] += 5;
                         }
                         else{
                             mercanaryCount[5] ++;
+                            spentKrakens[1] += 5;
                         }
                     }
                     else if(event.getItemId() == 3613){
                         if(event.getParticipantId() < 6){
                             mercanaryCount[2] ++;
+                            spentKrakens[0] += 5;
                         }
                         else{
                             mercanaryCount[6] ++;
+                            spentKrakens[1] += 5;
                         }
                     }
                     else if(event.getItemId() == 3614){
                         if(event.getParticipantId() < 6){
                             mercanaryCount[3] ++;
+                            spentKrakens[0] += 5;
                         }
                         else{
                             mercanaryCount[7] ++;
+                            spentKrakens[1] += 5;
+                        }
+                    }
+                    else if(event.getItemId() == 3615){
+                        if(event.getParticipantId() < 6){
+                            spentKrakens[0] += 5;
+                        }
+                        else{
+                            spentKrakens[1] += 5;
+                        }
+                    }
+                    else if(event.getItemId() == 3616){
+                        if(event.getParticipantId() < 6){
+                           spentKrakens[0] += 10;
+                        }
+                        else{
+                            spentKrakens[1] += 10;
+                        }
+                    }
+                    else if(event.getItemId() == 3617){
+                        if(event.getParticipantId() < 6){
+                            spentKrakens[0] += 20;
+                        }
+                        else{
+                            spentKrakens[1] += 20;
                         }
                     }
                 }
             }
         }
-        
+        totalKrakensSpent += spentKrakens[0] + spentKrakens[1];
+        totalKrakensSpentWinner += ((winner== 1) ? spentKrakens[0] : spentKrakens[1]);
+        totalKrakensSpentLoser += ((winner== 2) ? spentKrakens[1] : spentKrakens[0]);
         System.out.println("START_MATCH");
         System.out.println("MATCH_ID " + match.getMatchId());
         System.out.println("START_TEAM_1");
@@ -117,7 +207,6 @@ public class TrialByFire {
          */
         @Override
         public void run() {
-            calling_API = true;
             HttpsURLConnection con = null;
             try {
                 //Open the connection
@@ -139,8 +228,6 @@ public class TrialByFire {
                 }
             } catch (IOException e) {
                 //If it fails (no internet connet/bad id, ect)
-                calling_API = false;
-                         
             }
             finally{
                 //Make sure to disconnect when done
