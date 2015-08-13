@@ -44,8 +44,11 @@ public class TrialByFire {
             String line;
             while ((line = reader.readLine()) != null){
                 if(!line.equals("[") && !line.equals("]")){
-                    line = line.replaceAll(",", "");
-                    System.out.println(line);
+                    line = line.replaceAll(",| ", "");
+                    GetMatchInfo match = new GetMatchInfo(line);
+                    Thread th = new Thread(match);
+                    th.start();
+                    while(th.isAlive()){}
                 }
             }
         } catch (FileNotFoundException ex) {
@@ -67,22 +70,22 @@ public class TrialByFire {
         
         
         
-        /*
-        String[] matchIds = {"1907211476", "1907183118"};
+        
+        /*String[] matchIds = {"1907211476", "1907183118"};
         for(String matchId : matchIds){
             GetMatchInfo match = new GetMatchInfo(matchId);
             Thread th = new Thread(match);
             th.start();
             while(th.isAlive()){}
-        }
+        }*/
         
         
         averageKrakensSpent = ((double) totalKrakensSpent) / totalMatches;
         averageKrakensSpentWinner = ((double) totalKrakensSpentWinner) / totalMatches;
         averageKrakensSpentLoser = ((double) totalKrakensSpentLoser) / totalMatches;
-        System.out.printf("TOTAL_SPENT %d\nTOTAL_SPENT_WINNER %d\nTOTAL_SPENT_LOSER %d\n", totalKrakensSpent, totalKrakensSpentWinner, totalKrakensSpentLoser);
-        System.out.printf("AVERAGE_SPENT %f\n AVERAGE_SPENT_WINNER %f\nAVERAGE_SPENT_LOSER %f\n", averageKrakensSpent, averageKrakensSpentWinner, averageKrakensSpentLoser);
-        */
+        System.out.printf("TS %d\nTSW %d\nTSL %d\n", totalKrakensSpent, totalKrakensSpentWinner, totalKrakensSpentLoser);
+        System.out.printf("AS %f\nASW %f\nASL %f\n", averageKrakensSpent, averageKrakensSpentWinner, averageKrakensSpentLoser);
+        
     }
     
    /**
@@ -169,18 +172,19 @@ public class TrialByFire {
         }
         totalKrakensSpent += spentKrakens[0] + spentKrakens[1];
         totalKrakensSpentWinner += ((winner== 1) ? spentKrakens[0] : spentKrakens[1]);
-        totalKrakensSpentLoser += ((winner== 2) ? spentKrakens[1] : spentKrakens[0]);
-        System.out.println("START_MATCH");
-        System.out.println("MATCH_ID " + match.getMatchId());
-        System.out.println("START_TEAM_1");
+        totalKrakensSpentLoser += ((winner== 2) ? spentKrakens[0] : spentKrakens[1]);
+        System.out.println("SM");
+        System.out.println("MID " + match.getMatchId());
+        System.out.println("ST");
         System.out.println("WIN " + ((winner== 1) ? 1 : 0));
-        System.out.printf("IRONBACK %d\nRAZORFIN %d\nPLUNDERCRAB %d\nOCKLEPOD %d\n", mercanaryCount[0], mercanaryCount[1], mercanaryCount[2], mercanaryCount[3]);
-        System.out.println("END_TEAM_1");
-        System.out.println("START_TEAM_2");
+        System.out.printf("I %d\nR %d\nP %d\nO %d\n", mercanaryCount[0], mercanaryCount[1], mercanaryCount[2], mercanaryCount[3]);
+        System.out.println("ET");
+        System.out.println("ST");
         System.out.println("WIN " + ((winner== 2) ? 1 : 0));
-        System.out.printf("IRONBACK %d\nRAZORFIN %d\nPLUNDERCRAB %d\nOCKLEPOD %d\n", mercanaryCount[4], mercanaryCount[5], mercanaryCount[6], mercanaryCount[7]);
-        System.out.println("END_TEAM_2");
-        System.out.println("END_MATCH");
+        System.out.printf("I %d\nR %d\nP %d\nO %d\n", mercanaryCount[4], mercanaryCount[5], mercanaryCount[6], mercanaryCount[7]);
+        System.out.println("ET");
+        System.out.println("EM");
+        totalMatches += 1;
     }
     
      static class GetMatchInfo implements Runnable{
