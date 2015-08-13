@@ -3,10 +3,8 @@ var http = require('http') // http module
   , qs = require('querystring'); // querystring parser
 var exec = require('child_process').exec, child;
 
-function onRequestOld(request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.write("Hello World");
-  response.end();
+function validInput(input){    
+    return (typeof(input.Mercanaries) !== 'undefined') && input.Mercanaries.match(/^\d \d \d \d \d \d \d \d$/) && input.Mercanaries.length == 15;
 }
 
 function onRequest(request, response) {
@@ -26,7 +24,7 @@ function onRequest(request, response) {
             var POST = qs.parse(body);
 			
             // use POST
-			if (typeof(POST.Mercanaries) === 'undefined' || POST.Mercanaries.length != 15){
+			if (!validInput(POST)){
 				response.writeHead(404, {"Content-Type": "text/plain"});
 				response.end();
 			}
