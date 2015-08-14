@@ -173,7 +173,7 @@ public class TrialByFire {
         totalKrakensSpent += spentKrakens[0] + spentKrakens[1];
         totalKrakensSpentWinner += ((winner== 1) ? spentKrakens[0] : spentKrakens[1]);
         totalKrakensSpentLoser += ((winner== 2) ? spentKrakens[0] : spentKrakens[1]);
-        System.out.println("SM");
+        /*System.out.println("SM");
         System.out.println("MID " + match.getMatchId());
         System.out.println("S1");
         System.out.printf("I %d\nR %d\nP %d\nO %d\n", mercanaryCount[0], mercanaryCount[1], mercanaryCount[2], mercanaryCount[3]);
@@ -184,6 +184,10 @@ public class TrialByFire {
         System.out.println("WIN " + ((winner== 2) ? 1 : 0));
         System.out.println("ET");
         System.out.println("EM");
+        */
+        System.out.printf("%d%d%d%d", mercanaryCount[0], mercanaryCount[1], mercanaryCount[2], mercanaryCount[3]);
+        System.out.printf("%d%d%d%d", mercanaryCount[4], mercanaryCount[5], mercanaryCount[6], mercanaryCount[7]);
+        System.out.println(((winner== 1) ? 1 : 2));        
         totalMatches += 1;
     }
     

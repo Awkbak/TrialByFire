@@ -4,7 +4,7 @@ var http = require('http') // http module
 var exec = require('child_process').exec, child;
 
 function validInput(input){    
-    return (typeof(input.Mercanaries) !== 'undefined') && input.Mercanaries.match(/^\d \d \d \d \d \d \d \d$/) && input.Mercanaries.length == 15;
+    return (typeof(input.Mercanaries) !== 'undefined') && input.Mercanaries.match(/^\d\d\d\d\d\d\d\d$/) && input.Mercanaries.length == 8;
 }
 
 function onRequest(request, response) {
