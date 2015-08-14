@@ -12,25 +12,21 @@ function onRequest(request, response) {
         var body = '';
         request.on('data', function (data) {
             body += data;
-            // 1e6 === 1 * Math.pow(10, 6) === 1 * 1000000 ~~~ 1MB
-            if (body.length > 1e2) { 
-                // FLOOD ATTACK OR FAULTY CLIENT, NUKE REQUEST
+            if (body.length > 27) { 
                 request.connection.destroy();
-				console.log("Too Long");
+				console.log("too Long");
             }
         });
         request.on('end', function () {
 
             var POST = qs.parse(body);
-			
             // use POST
 			if (!validInput(POST)){
 				response.writeHead(404, {"Content-Type": "text/plain"});
 				response.end();
 			}
 			else{
-				console.log(POST.Mercanaries);
-				child = exec('java -jar TrialByFire.jar',
+				child = exec('@echo ' + POST.Mercanaries + '|BrawlerMatchFinder.exe',
 				  function (error, stdout, stderr){
 					if(error !== null){
 						console.log('exec error: ' + error);
