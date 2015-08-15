@@ -26,24 +26,24 @@ public class Frame {
 
     public Frame(){
         events = new ArrayList<>();
-        participantFrames = new ArrayList<>();
+        //participantFrames = new ArrayList<>();
     }
     
     public Frame(JSONObject obj){
         //Initialize ArrayLists
         events = new ArrayList<>();
-        participantFrames = new ArrayList<>();
+        //participantFrames = new ArrayList<>();
         
         //ints
-        timeStamp = (long) obj.get("timestamp");
+        //timeStamp = (long) obj.get("timestamp");
         //Arrays
         
         JSONArray arr;// = (JSONArray) obj.get("participantFrames");
-        JSONObject obj2 = (JSONObject) obj.get("participantFrames");
+        /*JSONObject obj2 = (JSONObject) obj.get("participantFrames");
         //System.out.println("G: " + (arr == null));
         for(int e = 1; e <= 10; e ++){
             participantFrames.add(new ParticipantFrame((JSONObject) obj2.get(e + "")));
-        }
+        }*/
         //for (Object arr1 : arr) {
         //    participantFrames.add(new ParticipantFrame((JSONObject) arr1));
         //}

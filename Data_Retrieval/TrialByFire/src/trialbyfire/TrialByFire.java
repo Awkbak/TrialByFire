@@ -37,7 +37,7 @@ public class TrialByFire {
     public static void main(String[] args) {
         //GetMatchInfo match = new GetMatchInfo("1907183118");
         
-        String fileName = "test.txt";
+        String fileName = "NA.json";
         BufferedReader reader = null;
         try {
             reader = new BufferedReader(new FileReader(fileName));
@@ -53,6 +53,7 @@ public class TrialByFire {
             }
         } catch (FileNotFoundException ex) {
             //Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("File Not Found");
             System.exit(0);
         } catch (IOException ex) {
             //Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);

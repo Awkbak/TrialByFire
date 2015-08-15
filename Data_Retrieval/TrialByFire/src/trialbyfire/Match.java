@@ -49,29 +49,29 @@ public class Match {
     public Match(JSONObject obj){
         //Initialize ArrayLists
         teams = new ArrayList<>();
-        participants = new ArrayList<>();
+        //participants = new ArrayList<>();
         //longs
-        matchDuration = (long) obj.get("matchDuration");
-        mapId = (long) obj.get("mapId");
-        matchCreation = (long) obj.get("matchCreation");
-        matchId = (long) obj.get("matchId");
+        //matchDuration = (long) obj.get("matchDuration");
+        //mapId = (long) obj.get("mapId");
+        //matchCreation = (long) obj.get("matchCreation");
+        //matchId = (long) obj.get("matchId");
         //String
-        matchMode = (String) obj.get("matchMode");
-        matchType = (String) obj.get("matchType");
-        matchVersion = (String) obj.get("matchVersion");
-        platformId = (String) obj.get("platformId");
-        queueType = (String) obj.get("queueType");
-        region = (String) obj.get("region");
-        season = (String) obj.get("season");
+        //matchMode = (String) obj.get("matchMode");
+        //matchType = (String) obj.get("matchType");
+        //matchVersion = (String) obj.get("matchVersion");
+        //platformId = (String) obj.get("platformId");
+        //queueType = (String) obj.get("queueType");
+        //region = (String) obj.get("region");
+        //season = (String) obj.get("season");
         //Objects
         timeline = new MatchTimeline((JSONObject) obj.get("timeline"));
         //Arrays
-        JSONArray arr = (JSONArray) obj.get("participants");
+        /*JSONArray arr = (JSONArray) obj.get("participants");
         for (Object arr1 : arr) {
             participants.add(new Participant((JSONObject) arr1));
-        }
+        }*/
         
-        arr = (JSONArray) obj.get("teams");
+        JSONArray arr = (JSONArray) obj.get("teams");
         for (Object arr1 : arr) {
             teams.add(new Team((JSONObject) arr1));
         }

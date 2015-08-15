@@ -20,10 +20,15 @@ int main(void){
 		exit(1);
 	}
 	while (fgets(line, 17, data) != NULL){
-		if ((line[0] == input[0] && line[1] == input[1] && line[2] == input[2] && line[3] == input[3] && line[4] == input[4] && line[5] == input[5] && line[6] == input[6] && line[7] == input[7]) ||
-			(line[4] == input[0] && line[5] == input[1] && line[6] == input[2] && line[7] == input[3] && line[0] == input[4] && line[1] == input[5] && line[2] == input[6] && line[3] == input[7])){
+		if (line[0] == input[0] && line[1] == input[1] && line[2] == input[2] && line[3] == input[3] && line[4] == input[4] && line[5] == input[5] && line[6] == input[6] && line[7] == input[7]){
 			stats[0]++;
 			if (line[8] == '1'){
+				stats[1]++;
+			}
+		}
+		else if (line[4] == input[0] && line[5] == input[1] && line[6] == input[2] && line[7] == input[3] && line[0] == input[4] && line[1] == input[5] && line[2] == input[6] && line[3] == input[7]){
+			stats[0]++;
+			if (line[8] == '2'){
 				stats[1]++;
 			}
 		}

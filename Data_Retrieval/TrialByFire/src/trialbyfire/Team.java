@@ -41,28 +41,28 @@ public class Team {
     
     public Team(JSONObject obj){
         //Initialize ArrayLists
-        bans = new ArrayList<>();
+        //bans = new ArrayList<>();
         
         //ints
-        teamId = (long) obj.get("teamId");
-        baronKills = (long) obj.get("baronKills");
-        dominionVictoryScore = (long) obj.get("dominionVictoryScore");       
-        dragonKills = (long) obj.get("dragonKills");
-        inhibitorKills = (long) obj.get("inhibitorKills");
-        towerKills = (long) obj.get("towerKills");
-        vilemawKills = (long) obj.get("vilemawKills");
+        //teamId = (long) obj.get("teamId");
+        //baronKills = (long) obj.get("baronKills");
+        //dominionVictoryScore = (long) obj.get("dominionVictoryScore");       
+        //dragonKills = (long) obj.get("dragonKills");
+        //inhibitorKills = (long) obj.get("inhibitorKills");
+        //towerKills = (long) obj.get("towerKills");
+        //vilemawKills = (long) obj.get("vilemawKills");
         //booleans
         winner = (boolean) obj.get("winner");
-        firstBaron = (boolean) obj.get("firstBaron");
-        firstBlood = (boolean) obj.get("firstBlood");
-        firstDragon = (boolean) obj.get("firstDragon");
-        firstInhibitor = (boolean) obj.get("firstInhibitor");
-        firstTower = (boolean) obj.get("firstTower");
+        //firstBaron = (boolean) obj.get("firstBaron");
+        //firstBlood = (boolean) obj.get("firstBlood");
+        //firstDragon = (boolean) obj.get("firstDragon");
+        //firstInhibitor = (boolean) obj.get("firstInhibitor");
+        //firstTower = (boolean) obj.get("firstTower");
         //arrays
-        JSONArray arr = (JSONArray) obj.get("bans");
+        /*JSONArray arr = (JSONArray) obj.get("bans");
         arr.stream().forEach((arr1) -> {
             bans.add(new BanTuple((JSONObject) arr1));
-        });
+        });*/
     }
 
     public long getTeamId() {
