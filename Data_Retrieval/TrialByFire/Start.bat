@@ -1,1 +1,1 @@
-java -jar TrialByFire.jar > DATA.data
+java -jar TrialByFire.jar

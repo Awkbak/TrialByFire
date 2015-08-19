@@ -10,6 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -31,62 +32,59 @@ public class TrialByFire {
     public static double averageKrakensSpent = 0;
     public static double averageKrakensSpentWinner = 0;
     public static double averageKrakensSpentLoser = 0;
+    public static final String regions[] = {"euw", "kr", "lan", "las", "oce", "ru", "tr"};
+    public static String currentRegion;
+    public static PrintWriter writer;
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) {
         //GetMatchInfo match = new GetMatchInfo("1907183118");
         
-        String fileName = "NA.json";
-        BufferedReader reader = null;
-        try {
-            reader = new BufferedReader(new FileReader(fileName));
-            String line;
-            while ((line = reader.readLine()) != null){
-                if(!line.equals("[") && !line.equals("]")){
-                    line = line.replaceAll(",| ", "");
-                    GetMatchInfo match = new GetMatchInfo(line);
-                    Thread th = new Thread(match);
-                    th.start();
-                    while(th.isAlive()){}
+        for(String region : regions){
+            currentRegion = region;
+            System.out.println(region);
+            String fileName = currentRegion.toUpperCase() + ".json";
+            BufferedReader reader = null;
+            try {
+                writer = new PrintWriter("DATA" + currentRegion.toUpperCase() + ".data", "UTF-8");
+                reader = new BufferedReader(new FileReader(fileName));
+                String line;
+                while ((line = reader.readLine()) != null){
+                    if(!line.equals("[") && !line.equals("]")){
+                        line = line.replaceAll(",| ", "");
+                        GetMatchInfo match = new GetMatchInfo(line);
+                        Thread th = new Thread(match);
+                        th.start();
+                        while(th.isAlive()){}
+                    }
+                }
+            } catch (FileNotFoundException ex) {
+                //Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("File Not Found");
+                System.exit(0);
+            } catch (IOException ex) {
+                //Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
+                System.out.println("IO Exception");
+                System.exit(0);
+            }
+            finally{
+                if(reader != null){
+                    try {
+                        reader.close();
+                    } catch (IOException ex) {
+                        Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
             }
-        } catch (FileNotFoundException ex) {
-            //Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
-            System.out.println("File Not Found");
-            System.exit(0);
-        } catch (IOException ex) {
-            //Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
-            System.exit(0);
+
+            averageKrakensSpent = ((double) totalKrakensSpent) / totalMatches;
+            averageKrakensSpentWinner = ((double) totalKrakensSpentWinner) / totalMatches;
+            averageKrakensSpentLoser = ((double) totalKrakensSpentLoser) / totalMatches;
+            writer.printf("TS %d\nTSW %d\nTSL %d\n", totalKrakensSpent, totalKrakensSpentWinner, totalKrakensSpentLoser);
+            writer.printf("AS %f\nASW %f\nASL %f\n", averageKrakensSpent, averageKrakensSpentWinner, averageKrakensSpentLoser);
+            writer.close();
         }
-        finally{
-            if(reader != null){
-                try {
-                    reader.close();
-                } catch (IOException ex) {
-                    Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
-        }
-        
-        
-        
-        
-        /*String[] matchIds = {"1907211476", "1907183118"};
-        for(String matchId : matchIds){
-            GetMatchInfo match = new GetMatchInfo(matchId);
-            Thread th = new Thread(match);
-            th.start();
-            while(th.isAlive()){}
-        }*/
-        
-        
-        averageKrakensSpent = ((double) totalKrakensSpent) / totalMatches;
-        averageKrakensSpentWinner = ((double) totalKrakensSpentWinner) / totalMatches;
-        averageKrakensSpentLoser = ((double) totalKrakensSpentLoser) / totalMatches;
-        System.out.printf("TS %d\nTSW %d\nTSL %d\n", totalKrakensSpent, totalKrakensSpentWinner, totalKrakensSpentLoser);
-        System.out.printf("AS %f\nASW %f\nASL %f\n", averageKrakensSpent, averageKrakensSpentWinner, averageKrakensSpentLoser);
-        
     }
     
    /**
@@ -186,9 +184,9 @@ public class TrialByFire {
         System.out.println("ET");
         System.out.println("EM");
         */
-        System.out.printf("%d%d%d%d", mercanaryCount[0], mercanaryCount[1], mercanaryCount[2], mercanaryCount[3]);
-        System.out.printf("%d%d%d%d", mercanaryCount[4], mercanaryCount[5], mercanaryCount[6], mercanaryCount[7]);
-        System.out.println(((winner== 1) ? 1 : 2));        
+        writer.printf("%d%d%d%d", mercanaryCount[0], mercanaryCount[1], mercanaryCount[2], mercanaryCount[3]);
+        writer.printf("%d%d%d%d", mercanaryCount[4], mercanaryCount[5], mercanaryCount[6], mercanaryCount[7]);
+        writer.println(((winner== 1) ? 1 : 2));        
         totalMatches += 1;
     }
     
@@ -204,7 +202,7 @@ public class TrialByFire {
          */
         public GetMatchInfo(String matchId){
             try {
-                this.url = new URL("https://na.api.pvp.net/api/lol/na/v2.2/match/" + matchId + "?includeTimeline=true&api_key=" + ApiKey.API_KEY);
+                this.url = new URL("https://na.api.pvp.net/api/lol/" + currentRegion + "/v2.2/match/" + matchId + "?includeTimeline=true&api_key=" + ApiKey.API_KEY);
             } catch (MalformedURLException ex) {
                     
             }

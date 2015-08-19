@@ -7,13 +7,46 @@ int main(void){
 	int stats[2];
 	stats[0] = 0;
 	stats[1] = 0;
-	char input[17];
-	fgets(input, 16, stdin);
+	char input[22];
+	fgets(input, 22, stdin);
 
 	FILE *data;
 	errno_t err;
 
-	err = fopen_s(&data, "DATA.data", "r");
+	if (input[8] == 'N'){
+		err = fopen_s(&data, "DATANA.data", "r");
+	}
+	else if (input[8] == 'B'){
+		err = fopen_s(&data, "DATABR.data", "r");
+	}
+	else if (input[8] == 'K'){
+		err = fopen_s(&data, "DATAKR.data", "r");
+	}
+	else if (input[8] == 'O'){
+		err = fopen_s(&data, "DATAOCE.data", "r");
+	}
+	else if (input[8] == 'R'){
+		err = fopen_s(&data, "DATARU.data", "r");
+	}
+	else if (input[8] == 'T'){
+		err = fopen_s(&data, "DATATR.data", "r");
+	}
+	else if (input[8] == 'E'){
+		if (input[10] == 'N'){
+			err = fopen_s(&data, "DATAEUNE.data", "r");
+		}
+		else{
+			err = fopen_s(&data, "DATAEUW.data", "r");
+		}
+	}
+	else if (input[8] == 'L'){
+		if (input[10] == 'N'){
+			err = fopen_s(&data, "DATAELAN.data", "r");
+		}
+		else{
+			err = fopen_s(&data, "DATALAS.data", "r");
+		}
+	}
 
 	if (err != 0) {
 		fprintf(stderr, "Can't open input file!\n");

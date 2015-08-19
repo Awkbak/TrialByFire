@@ -4,7 +4,7 @@ var http = require('http') // http module
 var exec = require('child_process').exec, child;
 
 function validInput(input){    
-    return (typeof(input.Mercanaries) !== 'undefined') && input.Mercanaries.match(/^\d\d\d\d\d\d\d\d$/) && input.Mercanaries.length == 8;
+    return (typeof(input.Mercanaries) !== 'undefined')  && (typeof(input.Region) !== 'undefined') && input.Mercanaries.match(/^\d\d\d\d\d\d\d\d$/) && input.Mercanaries.length == 8 && input.Region.length <= 4;
 }
 
 function onRequest(request, response) {
@@ -12,7 +12,7 @@ function onRequest(request, response) {
         var body = '';
         request.on('data', function (data) {
             body += data;
-            if (body.length > 27) { 
+            if (body.length > 32) { 
                 request.connection.destroy();
 				console.log("too Long");
             }
@@ -26,7 +26,7 @@ function onRequest(request, response) {
 				response.end();
 			}
 			else{
-				child = exec('@echo ' + POST.Mercanaries + '|BrawlerMatchFinder.exe',
+				child = exec('@echo ' + POST.Mercanaries + POST.Region + '|BrawlerMatchFinder.exe',
 				  function (error, stdout, stderr){
 					if(error !== null){
 						console.log('exec error: ' + error);
