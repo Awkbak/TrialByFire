@@ -233,8 +233,23 @@ public class TrialByFire {
                     //Call callback on main (JavaFX) thread
                     HandleMatch(JSONUtils.MatchParser.parseMatch(sb.toString()));
                 }
+                else if(statusCode == 429){
+                    //Read in the result into a StringBuilder
+                   con.disconnect();
+                   System.out.println("Rate Limit Exceeded");
+                   Thread.sleep(5000);
+                   run();
+                }
+                else if(statusCode == 403){
+                    //Read in the result into a StringBuilder
+                   con.disconnect();
+                   System.out.println("Black");
+                   System.exit(0);
+                }
             } catch (IOException e) {
                 //If it fails (no internet connet/bad id, ect)
+            } catch (InterruptedException ex) {
+                Logger.getLogger(TrialByFire.class.getName()).log(Level.SEVERE, null, ex);
             }
             finally{
                 //Make sure to disconnect when done
